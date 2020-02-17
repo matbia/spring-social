@@ -24,8 +24,8 @@ public class PasswordRecoveryService {
         PasswordRecoveryToken psr = new PasswordRecoveryToken(user);
         passwordRecoveryTokenRepository.save(psr);
 
-        String message = "http://" + Utils.getExternalIP() + ":8080/user/recover?token=" + psr.getToken();
-        mailService.send(user.getContactEmail(), "Coach Meets - Przywracanie hasła", message);
+        String message = "Use this link to recover your password: http://" + Utils.getExternalIP() + ":8080/user/recover?token=" + psr.getToken();
+        mailService.send(user.getContactEmail(), "Password Recovery", message);
     }
 
     @Transactional

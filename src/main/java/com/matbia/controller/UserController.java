@@ -1,5 +1,6 @@
 package com.matbia.controller;
 
+import com.matbia.enums.Gender;
 import com.matbia.enums.ImageFileExtension;
 import com.matbia.exception.ObjectNotFoundException;
 import com.matbia.misc.Utils;
@@ -241,8 +242,9 @@ public class UserController {
 
         //Watch notification
         if(user.get().getSettings().isWatchNotifications()) {
-            String subject = currUser.getFirstName() + " " + currUser.getLastName() + " dodał/a cię do obserwowanych";
-            String message = "Wyświetl profil: http://" + Utils.getExternalIP() + "/user/profile/" + currUser.getId();
+            String pronoun = user.get().getGender() != null ? user.get().getGender().equals(Gender.MALE) ? "his" : "her" : "his/her";
+            String subject = currUser.getFirstName() + " " + currUser.getLastName() + " added you to their watch list";
+            String message = "View " + pronoun + " profile at: http://" + Utils.getExternalIP() + "/user/profile/" + currUser.getId();
             mailService.send(user.get().getContactEmail(), subject, message);
         }
 
