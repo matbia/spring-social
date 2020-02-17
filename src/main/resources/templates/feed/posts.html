@@ -11,15 +11,15 @@
             <small class="text-secondary d-block" th:text="${#dates.format(post.timestamp, 'dd.MM.yyyy')}"></small>
         </div>
         <div th:if="${session.currUser.id == post.user.id}">
-            <button th:id="${'post-delete-' + post.id}" class="btn btn-outline-danger btn-sm float-right post-delete ml-1" th:data-id="${post.id}" >Usuń</button>
+            <button th:id="${'post-delete-' + post.id}" class="btn btn-outline-danger btn-sm float-right post-delete ml-1" th:data-id="${post.id}">Delete</button>
 
-            <button th:id="${'post-edit-' + post.id}" class="btn btn-outline-warning btn-sm float-right post-edit ml-1" th:data-id="${post.id}" >Edytuj</button>
+            <button th:id="${'post-edit-' + post.id}" class="btn btn-outline-warning btn-sm float-right post-edit ml-1" th:data-id="${post.id}">Edit</button>
 
-            <button th:id="${'post-edit-cancel-' + post.id}" class="btn btn-outline-secondary btn-sm float-right ml-1" style="display: none;" th:data-id="${post.id}" >Anuluj</button>
-            <button th:id="${'post-edit-save-' + post.id}" class="btn btn-outline-primary btn-sm float-right ml-1" style="display: none;" th:data-id="${post.id}" >Zapisz</button>
+            <button th:id="${'post-edit-cancel-' + post.id}" class="btn btn-outline-secondary btn-sm float-right ml-1" style="display: none;" th:data-id="${post.id}">Cancel</button>
+            <button th:id="${'post-edit-save-' + post.id}" class="btn btn-outline-primary btn-sm float-right ml-1" style="display: none;" th:data-id="${post.id}">Save</button>
         </div>
         <div th:unless="${session.currUser.id == post.user.id}">
-            <button sec:authorize="hasRole('ROLE_ADMIN')" th:id="${'post-delete-' + post.id}" class="btn btn-outline-danger btn-sm float-right post-delete" th:data-id="${post.id}" >Usuń</button>
+            <button sec:authorize="hasRole('ROLE_ADMIN')" th:id="${'post-delete-' + post.id}" class="btn btn-outline-danger btn-sm float-right post-delete" th:data-id="${post.id}">Delete</button>
         </div>
     </div>
 
@@ -42,7 +42,7 @@
         <iframe class="yt-video" th:src="${'https://www.youtube.com/embed/' + post.youtubeVideo}"></iframe>
     </div>
 
-    <input type="text" th:id="${'post-edit-tags-' + post.id}" th:value="${#strings.replace(#strings.toLowerCase(post.tags), '_', ' ')}" style="display: none;" class="form-control" placeholder="Podaj tagi oddzielone przecinkami">
+    <input type="text" th:id="${'post-edit-tags-' + post.id}" th:value="${#strings.replace(#strings.toLowerCase(post.tags), '_', ' ')}" style="display: none;" class="form-control" placeholder="Enter tags divided by comas">
 
     <div th:id="${'post-tags-' + post.id}" class="text-capitalize">
         <span class="badge badge-primary ml-1" th:each="tag : ${post.tags}">

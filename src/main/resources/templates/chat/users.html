@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 >
 <body>
-<p th:if="${#lists.isEmpty(users)}" class="font-weight-bold text-center text-secondary m-1">App people to your watch list to chat with them</p>
+<p th:if="${#lists.isEmpty(users)}" class="font-weight-bold text-center text-secondary m-1">Add people to your watch list to chat with them</p>
 <div th:each="user : ${users}">
     <div class="border-bottom p-1 chat-user row" th:data-id="${user.id}">
         <div class="col-3">
