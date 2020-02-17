@@ -30,13 +30,13 @@ public class ChatController {
     }
 
     @PostMapping("send")
-    public ResponseEntity sentChatMessage(@RequestParam("recipientId") long recipientId, @RequestParam("message") String msg) {
+    public ResponseEntity<HttpStatus> sentChatMessage(@RequestParam("recipientId") long recipientId, @RequestParam("message") String msg) {
         Optional<User> recipient = userService.getOne(recipientId);
         if(recipient.isPresent()) {
             chatService.save(new ChatMessage(userService.getCurrent(), recipient.get(), msg));
-            return new ResponseEntity(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } else
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("users")

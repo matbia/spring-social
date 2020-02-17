@@ -129,18 +129,18 @@ public class FeedController {
 
 
     @PostMapping("comment/save/{postId}")
-    public ResponseEntity commentOnPost(@ModelAttribute("currUser") User currUser, @PathVariable("postId") long postId, @RequestParam("message") String message) {
+    public ResponseEntity<HttpStatus> commentOnPost(@ModelAttribute("currUser") User currUser, @PathVariable("postId") long postId, @RequestParam("message") String message) {
         Post post = postService.getOne(postId);
 
         if(post == null) throw new ObjectNotFoundException();
-        if(post.getUser().getBlockedUsersIds().contains(currUser.getId())) return new ResponseEntity(HttpStatus.FORBIDDEN);
+        if(post.getUser().getBlockedUsersIds().contains(currUser.getId())) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
         commentService.save(new Comment(currUser, post, message));
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("like/{postId}")
-    public ResponseEntity likePost(@ModelAttribute("currUser") User currUser, @PathVariable("postId") long postId) {
+    public ResponseEntity<HttpStatus> likePost(@ModelAttribute("currUser") User currUser, @PathVariable("postId") long postId) {
         Post post = postService.getOne(postId);
 
         //If user has already liked selected post
@@ -150,53 +150,53 @@ public class FeedController {
             post.getLikesUserIds().add(currUser.getId()); //Add a new like
 
         postService.update(post);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /* Update routes */
 
     @PostMapping("post/update/{id}")
-    public ResponseEntity updatePost(@ModelAttribute("currUser") User currUser,
+    public ResponseEntity<HttpStatus> updatePost(@ModelAttribute("currUser") User currUser,
                                      @PathVariable("id") long id,
                                      @RequestParam(value = "msg", required = false) String msg,
                                      @RequestParam(value = "tags", required = false) String tags) {
         Post post = postService.getOne(id);
         if (post == null) throw new ObjectNotFoundException();
-        if(currUser.getId() != post.getUser().getId()) return new ResponseEntity(HttpStatus.FORBIDDEN);
+        if(currUser.getId() != post.getUser().getId()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
         Set<String> tagsSet = tags != null && !tags.isEmpty() ?
                 Arrays.stream(tags.split(",")).map(t -> t.trim().toUpperCase().replace(" ", "_")).collect(Collectors.toSet()) : new HashSet<>();
         if (msg != null) post.setMessage(msg);
         post.setTags(tagsSet);
         postService.update(post);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /* Delete routes */
 
     @GetMapping("post/delete/{id}")
-    public ResponseEntity deletePost(@ModelAttribute("currUser") User currUser, @PathVariable("id") long postId) {
+    public ResponseEntity<HttpStatus> deletePost(@ModelAttribute("currUser") User currUser, @PathVariable("id") long postId) {
         Post post = postService.getOne(postId);
-        if (post == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if (post == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         if(post.getUser().getId() == currUser.getId() || roleService.isUserAdmin(currUser)) {
             commentService.deleteByPost(post);
             postService.deleteById(postId);
-            return new ResponseEntity(HttpStatus.OK);
-        } else return new ResponseEntity(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("comment/delete/{id}")
-    public ResponseEntity deleteComment(@ModelAttribute("currUser") User currUser, @PathVariable("id") long commentId) {
+    public ResponseEntity<HttpStatus> deleteComment(@ModelAttribute("currUser") User currUser, @PathVariable("id") long commentId) {
         Optional<Comment> comment = commentService.getOne(commentId);
-        if(!comment.isPresent()) return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if(!comment.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         if(comment.get().getUser().getId() == currUser.getId() || //User is the comments author
                 comment.get().getPost().getUser().getId() == currUser.getId() || //User is the posts author
                 roleService.isUserAdmin(currUser)) {
             commentService.deleteById(commentId);
-            return new ResponseEntity(HttpStatus.OK);
-        } else return new ResponseEntity(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     /* File routes */

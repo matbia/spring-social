@@ -233,11 +233,11 @@ public class UserController {
     }
 
     @PostMapping("watch/{id}")
-    public ResponseEntity watchUser(@PathVariable("id") long userId) {
+    public ResponseEntity<HttpStatus> watchUser(@PathVariable("id") long userId) {
         User currUser = userService.getCurrent();
         Optional<User> user = userService.getOne(userId);
         if(!user.isPresent()) throw new ObjectNotFoundException();
-        if(currUser.getId() == userId || user.get().getBlockedUsersIds().contains(currUser.getId())) return new ResponseEntity(HttpStatus.FORBIDDEN); //Prevent blocked users from watching
+        if(currUser.getId() == userId || user.get().getBlockedUsersIds().contains(currUser.getId())) return new ResponseEntity<>(HttpStatus.FORBIDDEN); //Prevent blocked users from watching
 
         //Watch notification
         if(user.get().getSettings().isWatchNotifications()) {
@@ -253,11 +253,11 @@ public class UserController {
             currUser.getWatchedUsersIds().add(userId); //Add a new user ID
         userService.update(currUser);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("block/{id}")
-    public ResponseEntity blockUser(@PathVariable("id") long userId) {
+    public ResponseEntity<HttpStatus> blockUser(@PathVariable("id") long userId) {
         User currUser = userService.getCurrent();
         Optional<User> user = userService.getOne(userId);
         if(!user.isPresent()) throw new ObjectNotFoundException();
@@ -270,6 +270,6 @@ public class UserController {
 
         userService.update(currUser);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
