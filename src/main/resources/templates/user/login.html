@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:replace="fragments :: head">
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container py-3">
+    <div class="row justify-content-md-center">
+        <div class="col-md-6 border p-3 mt-3">
+            <h2 class="text-center">Log in</h2>
+            <h5 th:if="${param.error}" class="text-danger text-center text-weight-bold">Incorrect credentials or exceeded login attempts limit</h5>
+            <h5 th:if="${param.confirmed}" class="text-success text-center text-weight-bold">Account has been activated successfully</h5>
+            <h5 th:if="${param.passwdChanged}" class="text-success text-center text-weight-bold">Password has been changed</h5>
+            <h5 th:if="${param.resendConfirmation}" class="text-success text-center text-weight-bold">Activation link has been resend</h5>
+            <form class="clearfix" th:action="@{/user/login}" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="E-mail address" required="" autofocus="" />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">Log in</button>
+            </form>
+            <div class="text-center">
+                <small class="font-weight-light text-danger">Entering wrong credentials 5 or more times will result in a 3-hour long block</small>
+            </div>
+            <a class="float-left form-text text-muted" th:href="@{/user/register}"><small>Don't have an account?</small></a>
+            <a class="float-right form-text text-muted" th:href="@{/user/requestRecovery}"><small>Forgot your password?</small></a>
+        </div>
+    </div>
+</div>
+
+<nav th:replace="fragments :: footer"></nav>
+</body>
+</html>

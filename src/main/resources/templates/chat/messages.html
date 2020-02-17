@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<body>
+<div th:each="msg : ${messages}" class="message border-bottom">
+    <div class="m-1">
+        <img class="rounded-circle" th:src="${'/user/profpic/' + msg.userFrom.id}" width="40px" height="40px" />
+        <span class="font-weight-bold" th:text="${msg.userFrom.firstName + ' ' + msg.userFrom.lastName}"></span>
+        <small th:text="${#dates.format(msg.timestamp, 'dd.MM.yyyy HH:mm')}" class="text-secondary float-right"></small>
+    </div>
+    <p class="message-text p-1" th:utext="${#strings.replace( #strings.escapeXml( msg.message ),T(java.lang.System).getProperty('line.separator'),'$NEWLINE')}"></p>
+</div>
+</body>
+</html>

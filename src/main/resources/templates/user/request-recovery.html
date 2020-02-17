@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container bg-light py-3">
+    <div class="row justify-content-md-center pt-3">
+        <div class="col-md-5 mt-3 p-3 border">
+            <div class="text-center my-1">
+                <h2>Account recovery</h2>
+                <p>Recovery link will be send to the specified e-mail address allowing for password reset of the associated account</p>
+            </div>
+            <p th:if="${param.sent}" class="text-success text-center text-weight-bold">Recovery link has been sent</p>
+            <form class="no-enter-submit" th:action="@{/user/requestRecovery}" method="POST">
+                <div class="form-group">
+                    <input type="email" name="email" class="passwd-input form-control" placeholder="Enter e-mail address">
+                </div>
+                <input type="submit" class="btn btn-primary btn-block" value="Send"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+<nav th:replace="fragments :: footer"></nav>
+</body>
+</html>

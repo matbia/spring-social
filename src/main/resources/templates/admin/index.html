@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:replace="fragments :: head">
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container bg-light">
+    <h1>Admin panel</h1>
+</div>
+<nav th:replace="fragments :: footer"></nav>
+
+<script th:src="@{/js/feed-ajax-client.js}" type="text/javascript"></script>
+</body>
+</html>

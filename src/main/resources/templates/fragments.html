@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+    <title>Spring Social</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <script th:src="@{/js/libs/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/libs/bootstrap.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/libs/jquery-ui.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/global.js}" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/libs/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/libs/jquery-ui.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">Spring Social</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul sec:authorize="isAnonymous()" class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/login}">Log in <span class="fa fa-key"></span></a>
+                </li>
+            </ul>
+            <ul sec:authorize="isAuthenticated()" class="navbar-nav mx-auto">
+                <li class="nav-item mx-2" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="nav-link-icon fa fa-2x fa-cogs text-light" th:href="@{/admin/dashboard}"></a><br/>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link-icon fa fa-2x fa-home text-light" th:href="@{/feed/dashboard}"></a><br/>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link-icon fa fa-2x fa-comments-o text-light" th:href="@{/chat/dashboard}"></a><br/>
+                </li>
+                <li class="nav-item mx-2">
+                    <div class="dropdown show">
+                        <a href="#" class="nav-link-icon fa fa-2x fa-navicon text-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu"  aria-labelledby="dropdownMenuLink">
+                            <span class="dropdown-item font-weight-bold" sec:authentication="name"></span>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{/user/edit}">Edit profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" th:href="@{/user/logout}">Log out</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<footer th:fragment="footer" class="py-4 bg-dark footer">
+    <div class="container">
+        <p class="m-0 text-center text-white">Spring Social</p>
+    </div>
+</footer>
+
+</body>
+</html>

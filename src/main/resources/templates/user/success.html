@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:replace="fragments :: head">
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container bg-light py-3 text-center">
+    <div class="jumbotron">
+        <h1 class="display-4">Registration finished successfully</h1>
+        <p class="lead">Activation link has been set to your inbox</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" th:href="@{/user/login}" role="button">Go to login page</a>
+            <a class="btn btn-primary btn-lg" th:href="@{/}" role="button">Go back to main page</a>
+        </p>
+    </div>
+</div>
+
+<nav th:replace="fragments :: footer"></nav>
+</body>
+</html>

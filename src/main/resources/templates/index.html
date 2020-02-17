@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragments :: head">
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<header class="masthead mb-3">
+    <div class="text-center text-dark">
+        <h1>Spring Social</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto">
+                <a class="btn btn-primary btn-lg font-weight-bold" th:href="@{/user/register}" role="button">Sign up</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row text-center">
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <h4 class="card-header">Text1</h4>
+                <div class="card-body">
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <h4 class="card-header">Text2</h4>
+                <div class="card-body">
+                    <p class="card-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <h4 class="card-header">Text3</h4>
+                <div class="card-body">
+                    <p class="card-text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<nav th:replace="fragments :: footer"></nav>
+</body>
+</html>

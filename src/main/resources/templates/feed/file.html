@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title th:text="${'Plik: ' + filename}"></title>
+</head>
+<body>
+    <img th:src="${'/feed/file/' + filename}" />
+</body>
+</html>

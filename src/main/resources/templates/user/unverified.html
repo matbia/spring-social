@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:replace="fragments :: head">
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container bg-light py-3 text-center">
+    <div class="jumbotron">
+        <h1 class="display-4 text-danger">Unconfirmed e-mail address</h1>
+        <p class="lead">Please verify you e-mail address by clicking the activation link sent to your inbox</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" th:href="@{/}" role="button">Go back to main page</a>
+            <a class="btn btn-info btn-lg" th:href="${'/user/resendConfirmation?email=' + email}" role="button">Resend the activation link</a>
+        </p>
+    </div>
+</div>
+
+<nav th:replace="fragments :: footer"></nav>
+</body>
+</html>

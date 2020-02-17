@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:replace="fragments :: head">
+<body>
+<div class="container bg-light py-3 text-center">
+    <div class="jumbotron">
+        <h1 class="display-4">Something went wrong...</h1>
+        <p class="lead">An error occurred during the processing of your request.</p>
+        <p class="lead" th:text="${'Error code: ' +errorCode}"></p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" th:href="@{/}" role="button"><span class="fa fa-home"></span>Go back to main page</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<h2 th:if="${#lists.isEmpty(posts)}" class="font-weight-bold text-center text-secondary m-2 p-2">No posts found</h2>
+<div class="post my-2 p-2 border" th:each="post : ${posts}" th:id="${'post-' + post.id}">
+    <div class="clearfix">
+        <a th:href="${'/user/profile/' + post.user.id}"><img class="rounded-circle float-left" th:src="${'/user/profpic/' + post.user.id}" width="64px" height="64px" /></a>
+        <div class="float-left ml-1">
+            <span class="h5 text-capitalize" th:text="${post.user.firstName + ' ' + post.user.lastName}"></span>
+            <small class="text-secondary d-block" th:text="${#dates.format(post.timestamp, 'dd.MM.yyyy')}"></small>
+        </div>
+        <div th:if="${session.currUser.id == post.user.id}">
+            <button th:id="${'post-delete-' + post.id}" class="btn btn-outline-danger btn-sm float-right post-delete ml-1" th:data-id="${post.id}" >Usuń</button>
+
+            <button th:id="${'post-edit-' + post.id}" class="btn btn-outline-warning btn-sm float-right post-edit ml-1" th:data-id="${post.id}" >Edytuj</button>
+
+            <button th:id="${'post-edit-cancel-' + post.id}" class="btn btn-outline-secondary btn-sm float-right ml-1" style="display: none;" th:data-id="${post.id}" >Anuluj</button>
+            <button th:id="${'post-edit-save-' + post.id}" class="btn btn-outline-primary btn-sm float-right ml-1" style="display: none;" th:data-id="${post.id}" >Zapisz</button>
+        </div>
+        <div th:unless="${session.currUser.id == post.user.id}">
+            <button sec:authorize="hasRole('ROLE_ADMIN')" th:id="${'post-delete-' + post.id}" class="btn btn-outline-danger btn-sm float-right post-delete" th:data-id="${post.id}" >Usuń</button>
+        </div>
+    </div>
+
+    <p th:id="${'post-msg-' + post.id}" class="post-text m-1" th:text="${#strings.replace( #strings.escapeXml( post.message ),T(java.lang.System).getProperty('line.separator'), '$NEWLINE')}"></p>
+
+    <div th:if="${post.postFile.fileExtension}" th:switch="${post.postFile.fileExtension}">
+        <div th:case="${T(com.matbia.enums.PostFileExtension).MP4}">
+            <video class="mx-auto d-block post-file" controls>
+                <source th:src="${'/feed/file/' + post.postFile.filename}" type="video/mp4">
+            </video>
+        </div>
+        <div th:case="*">
+            <a th:href="${'/feed/image/' + post.postFile.filename}">
+                <img class="mx-auto d-block post-file post-img" th:src="${'/feed/thumbnail/' + post.postFile.filename}" />
+            </a>
+        </div>
+    </div>
+
+    <div class="yt-video-container" th:if="${!#strings.isEmpty(post.youtubeVideo)}">
+        <iframe class="yt-video" th:src="${'https://www.youtube.com/embed/' + post.youtubeVideo}"></iframe>
+    </div>
+
+    <input type="text" th:id="${'post-edit-tags-' + post.id}" th:value="${#strings.replace(#strings.toLowerCase(post.tags), '_', ' ')}" style="display: none;" class="form-control" placeholder="Podaj tagi oddzielone przecinkami">
+
+    <div th:id="${'post-tags-' + post.id}" class="text-capitalize">
+        <span class="badge badge-primary ml-1" th:each="tag : ${post.tags}">
+            <span th:text="${#strings.replace(#strings.toLowerCase(tag), '_', ' ')}"></span>
+        </span>
+    </div>
+
+    <div class="post-stats mx-1">
+        <span class="text-secondary text-big d-block float-right">
+            <span class="fa fa-comments"></span>
+            <span th:id="${'comments-count-' + post.id}" th:text="${post.commentsCount}"></span>
+        </span>
+        <span class="d-block text-big" th:classappend="${post.likesUserIds.contains(session.currUser.id)} ? text-success : text-secondary">
+            <span class="fa fa-thumbs-o-up btn-like" th:data-id="${post.id}"></span>
+            <span th:id="${'post-likes-count-' + post.id}" th:text="${#lists.size(post.likesUserIds)}"></span>
+        </span>
+    </div>
+
+    <div class="m-1 p-2 border">
+        <form th:id="${'comment-form-' + post.id}" class="comment-form" th:data-id="${post.id}">
+            <div class="input-group" >
+                <textarea rows="2" name="message" class="form-control" placeholder="Message"></textarea>
+                <div class="input-group-prepend">
+                    <button class="input-group-text btn btn-primary btn-block" type="submit">
+                        <span class="fa fa-send"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <button class="btn btn-primary btn-sm btn-comments btn-load-comments mt-1" th:data-id="${post.id}">Show comments</button>
+        <div th:id="${'comments-container-' + post.id}"></div>
+    </div>
+</div>
+</body>
+</html>
