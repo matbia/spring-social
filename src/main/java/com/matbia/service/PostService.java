@@ -35,7 +35,7 @@ public class PostService {
             if (post.getYoutubeVideo() != null && !post.getYoutubeVideo().isEmpty())
                 post.setMultipartFile(null);
 
-            post.setPostFile(postFileService.regiserPostFile(post.getMultipartFile()));
+            post.setPostFile(postFileService.registerPostFile(post.getMultipartFile()));
             postRepository.save(post);
         } catch (Exception e) {
             e.printStackTrace();

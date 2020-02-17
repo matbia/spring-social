@@ -41,7 +41,7 @@ class PostFileService {
         }
     }
 
-    PostFile regiserPostFile(MultipartFile multipartFile) throws IOException {
+    PostFile registerPostFile(MultipartFile multipartFile) throws IOException {
         PostFile postFile = new PostFile();
 
         if(multipartFile != null && !multipartFile.isEmpty()) {
