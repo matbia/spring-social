@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -215,7 +216,7 @@ public class UserController {
 
         //If profile image is not set
         if(!profilePicture.isPresent()) {
-            byte[] placeholderPicture = FileUtils.readFileToByteArray(new File("profile-placeholder.jpg"));
+            byte[] placeholderPicture = FileUtils.readFileToByteArray(ResourceUtils.getFile("classpath:static/img/profile-placeholder.jpg"));
             headers.setContentType(MediaType.IMAGE_JPEG);
             return new ResponseEntity<>(placeholderPicture, headers, HttpStatus.CREATED);
         }

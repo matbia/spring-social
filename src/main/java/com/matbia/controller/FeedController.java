@@ -14,11 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -203,16 +205,16 @@ public class FeedController {
 
     @ResponseBody
     @GetMapping("file/{filename}")
-    public FileSystemResource getPostFile(@PathVariable("filename") String filename) {
+    public FileSystemResource getPostFile(@PathVariable("filename") String filename) throws FileNotFoundException {
         File file = new File("files/" +  filename);
-        return file.exists() ? new FileSystemResource(file) : new FileSystemResource(new File("missing-media.png"));
+        return file.exists() ? new FileSystemResource(file) : new FileSystemResource(ResourceUtils.getFile("classpath:static/img/missing-media.png"));
     }
 
     @ResponseBody
     @GetMapping("thumbnail/{filename}")
-    public FileSystemResource getPostThumbnail(@PathVariable("filename") String filename) {
+    public FileSystemResource getPostThumbnail(@PathVariable("filename") String filename) throws FileNotFoundException {
         File file = new File("files/thumbnails/thumb-" +  filename);
-        return file.exists() ? new FileSystemResource(file) : new FileSystemResource(new File("missing-media.png"));
+        return file.exists() ? new FileSystemResource(file) : new FileSystemResource(ResourceUtils.getFile("classpath:static/img/missing-media.png"));
     }
 
     @GetMapping("image/{filename}")
