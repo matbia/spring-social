@@ -1,6 +1,7 @@
 package com.matbia.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -13,29 +14,25 @@ import java.util.logging.Logger;
 @Service
 public class MailService {
     private static final Logger LOGGER = Logger.getLogger(MailService.class.getName());
-    private final String SERVER_MAIL = "webservice@firemail.cc";
+
+    @Value("${spring.mail.username}")
+    private String mailUsername;
 
     @Autowired
     private JavaMailSender emailSender;
 
     public void send(String to, String subject, String text) {
-        //JavaMailSenderImpl sender = new JavaMailSenderImpl();
         MimeMessage mail = emailSender.createMimeMessage();
 
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
             helper.setTo(to);
-            helper.setFrom(SERVER_MAIL);
+            helper.setFrom(mailUsername);
             helper.setSubject(subject);
-            helper.setText("<html><body><center><h3>Coach Meets</h3></center><p>" + text + "</p></body></html>");
+            helper.setText("<html><body><center><h3>Spring Social</h3></center><p>" + text + "</p></body></html>");
         } catch (MessagingException e) {
             LOGGER.log(Level.SEVERE, e.toString());
         }
-
-        /*
-        FileSystemResource res = new FileSystemResource(new File("c:/Sample.jpg"));
-        helper.addInline("identifier1234", res);
-        **/
 
         try {
             emailSender.send(mail);
