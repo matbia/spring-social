@@ -41,6 +41,7 @@ public class FeedController {
     @GetMapping("dashboard")
     public String showDashboard(Model model) {
         model.addAttribute("post", new Post());
+        model.addAttribute("currUser", userService.getCurrent());
         return "feed/index";
     }
 
@@ -158,13 +159,12 @@ public class FeedController {
     /* Update routes */
 
     @PostMapping("post/update/{id}")
-    public ResponseEntity<HttpStatus> updatePost(@ModelAttribute("currUser") User currUser,
-                                     @PathVariable("id") long id,
+    public ResponseEntity<HttpStatus> updatePost(@PathVariable("id") long id,
                                      @RequestParam(value = "msg", required = false) String msg,
                                      @RequestParam(value = "tags", required = false) String tags) {
         Post post = postService.getOne(id);
         if (post == null) throw new ObjectNotFoundException();
-        if(currUser.getId() != post.getUser().getId()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if(userService.getCurrent().getId() != post.getUser().getId()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
         Set<String> tagsSet = tags != null && !tags.isEmpty() ?
                 Arrays.stream(tags.split(",")).map(t -> t.trim().toUpperCase().replace(" ", "_")).collect(Collectors.toSet()) : new HashSet<>();
@@ -177,8 +177,9 @@ public class FeedController {
     /* Delete routes */
 
     @GetMapping("post/delete/{id}")
-    public ResponseEntity<HttpStatus> deletePost(@ModelAttribute("currUser") User currUser, @PathVariable("id") long postId) {
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") long postId) {
         Post post = postService.getOne(postId);
+        User currUser = userService.getCurrent();
         if (post == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         if(post.getUser().getId() == currUser.getId() || roleService.isUserAdmin(currUser)) {
@@ -189,8 +190,9 @@ public class FeedController {
     }
 
     @GetMapping("comment/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteComment(@ModelAttribute("currUser") User currUser, @PathVariable("id") long commentId) {
+    public ResponseEntity<HttpStatus> deleteComment(@PathVariable("id") long commentId) {
         Optional<Comment> comment = commentService.getOne(commentId);
+        User currUser = userService.getCurrent();
         if(!comment.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         if(comment.get().getUser().getId() == currUser.getId() || //User is the comments author
