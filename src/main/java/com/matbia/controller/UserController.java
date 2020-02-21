@@ -21,10 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
@@ -59,9 +57,8 @@ public class UserController {
     }
 
     @GetMapping("verificationCheck")
-    public String verify(Model model, HttpSession session) {
+    public String verify(Model model) {
         User user = userService.getCurrent();
-        session.setAttribute("currUser", user);
         //Check if user has any role assigned
         if(roleService.getAll().stream().anyMatch(role -> role.getUsers().contains(user))) return "redirect:/feed/dashboard";
         model.addAttribute("email", user.getEmail());
