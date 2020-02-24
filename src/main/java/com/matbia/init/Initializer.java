@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.io.File;
 
+/**
+ * Responsible for providing conditions required for the proper functioning of the application.
+ */
 @Component
 public class Initializer implements ApplicationRunner {
     private UserService userService;
@@ -21,9 +24,14 @@ public class Initializer implements ApplicationRunner {
         this.roleService = roleService;
     }
 
+    /**
+     * Is ran every time the application starts.
+     * Initializes the authentication system and ensures that a proper folder structure is present.
+     * @param args arguments that were used to run the application
+     */
     @Override
     @Transactional
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         //Initialize media directories
         File dirs = new File("files/thumbnails");
         if(!dirs.exists() || !dirs.isDirectory())
