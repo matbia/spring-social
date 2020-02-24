@@ -45,6 +45,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }
 
+    /**
+     * Returns IP address from current servlet request.
+     * @return client's IP address
+     */
     private String getClientIP() {
         String xfHeader = request.getHeader("X-Forwarded-For");
         if (xfHeader == null) return request.getRemoteAddr();

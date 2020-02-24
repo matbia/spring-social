@@ -21,6 +21,12 @@ public class MailService {
     @Autowired
     private JavaMailSender emailSender;
 
+    /**
+     * Sends a stylized email message
+     * @param to recipient's email address
+     * @param subject email subject line
+     * @param text content that will be included in the message body
+     */
     public void send(String to, String subject, String text) {
         MimeMessage mail = emailSender.createMimeMessage();
 
