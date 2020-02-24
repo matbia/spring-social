@@ -12,6 +12,10 @@ public class AuthenticationFailureEventListener implements ApplicationListener<A
     @Autowired
     private LoginAttemptService loginAttemptService;
 
+    /**
+     * Caches the IP address from a failed authentication attempt request
+     * @param e application event which indicates authentication failure due to invalid credentials being submitted
+     */
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent e) {
         WebAuthenticationDetails auth = (WebAuthenticationDetails)
                 e.getAuthentication().getDetails();

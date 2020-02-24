@@ -12,6 +12,10 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
     @Autowired
     private LoginAttemptService loginAttemptService;
 
+    /**
+     * Removes the IP address from a asuccessful authentication request from cache
+     * @param e application event which indicates successful authentication
+     */
     public void onApplicationEvent(AuthenticationSuccessEvent e) {
         WebAuthenticationDetails auth = (WebAuthenticationDetails)
                 e.getAuthentication().getDetails();
