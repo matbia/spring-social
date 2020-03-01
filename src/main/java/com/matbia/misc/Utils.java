@@ -9,7 +9,17 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Miscellaneous static utility methods
+ */
 public class Utils {
+    /**
+     * Scales image dimentions
+     * @param imgByteArr image file as a byte array
+     * @param fileExtension image file extension
+     * @param targetSize desired image width
+     * @return Scaled image
+     */
     public static byte[] scaleImage(byte[] imgByteArr, String fileExtension, int targetSize) throws IOException {
         BufferedImage scaledImg = Scalr.resize(ImageIO.read(new ByteArrayInputStream(imgByteArr)), targetSize);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -20,12 +30,21 @@ public class Utils {
         return scaledImageByteArr;
     }
 
+    /**
+     * Extracts ID from YouTube video URL
+     * @param ytUrl URL adress of a YouTube video
+     * @return YouTube video ID or empty string if URL is invalid
+     */
     public static String extractYouTubeId(String ytUrl) {
         String regex = "(?<=youtu.be/|watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
         Matcher matcher = Pattern.compile(regex).matcher(ytUrl);
         return matcher.find() ? matcher.group() : "";
     }
 
+    /**
+     * Fetches the external IP address
+     * @return public IP address or 127.0.0.1 if any exception is thrown 
+     */
     public static String getExternalIP() {
         try {
             return new BufferedReader(new InputStreamReader(new URL("http://checkip.amazonaws.com").openStream())).readLine();
