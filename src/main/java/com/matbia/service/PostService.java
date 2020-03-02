@@ -5,6 +5,7 @@ import com.matbia.model.Post;
 import com.matbia.model.User;
 import com.matbia.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class PostService {
     }
 
     public List<Post> getPage(int page) {
-        return postRepository.limit(page * 10 - 10);
+        return postRepository.findByOrderByTimestampDesc(PageRequest.of(page - 1, 10));
     }
 
     public List<Post> getByUser(User user) {

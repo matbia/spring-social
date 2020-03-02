@@ -2,6 +2,7 @@ package com.matbia.repository;
 
 import com.matbia.model.Post;
 import com.matbia.model.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,9 +11,8 @@ import java.util.Set;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUser(User user);
+    List<Post> findByOrderByTimestampDesc(Pageable pageable);
     void deleteByUser(User user);
-    @Query(value = "SELECT * FROM post ORDER BY timestamp DESC LIMIT 10 OFFSET ?1", nativeQuery = true)
-    List<Post> limit(int offset);
     @Query(value = "SELECT * FROM post WHERE user_id IN ?1 ORDER BY timestamp DESC LIMIT 10 OFFSET ?2", nativeQuery = true)
     List<Post> findByUserIdsLimitResults(Set<Long> userIds, int offset);
     @Query(value = "SELECT COUNT(*) FROM post WHERE user_id IN ?1", nativeQuery = true)
