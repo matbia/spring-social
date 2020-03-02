@@ -10,8 +10,8 @@
     <div class="row justify-content-md-center">
         <div class="col-md-2">
             <div class="card card-body mt-2">
-                <a th:href="${'/user/profile/' + session.currUser.id}"><img class="rounded-circle mx-auto d-block mt-2" th:src="${'/user/profpic/' + session.currUser.id}" width="100px" height="100px" /></a>
-                <p class="text-center text-capitalize font-weight-bold" th:text="${session.currUser.firstName + ' ' + session.currUser.lastName}"></p>
+                <a th:href="${'/user/profile/' + currUser.id}"><img class="rounded-circle mx-auto d-block mt-2" th:src="${'/user/profpic/' + currUser.id}" width="100px" height="100px" /></a>
+                <p class="text-center text-capitalize font-weight-bold" th:text="${currUser.firstName + ' ' + currUser.lastName}"></p>
             </div>
         </div>
         <div class="col-md-7 border">

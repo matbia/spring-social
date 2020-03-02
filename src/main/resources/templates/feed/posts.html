@@ -10,7 +10,7 @@
             <span class="h5 text-capitalize" th:text="${post.user.firstName + ' ' + post.user.lastName}"></span>
             <small class="text-secondary d-block" th:text="${#dates.format(post.timestamp, 'dd.MM.yyyy')}"></small>
         </div>
-        <div th:if="${session.currUser.id == post.user.id}">
+        <div th:if="${currUser.id == post.user.id}">
             <button th:id="${'post-delete-' + post.id}" class="btn btn-outline-danger btn-sm float-right post-delete ml-1" th:data-id="${post.id}">Delete</button>
 
             <button th:id="${'post-edit-' + post.id}" class="btn btn-outline-warning btn-sm float-right post-edit ml-1" th:data-id="${post.id}">Edit</button>
@@ -18,7 +18,7 @@
             <button th:id="${'post-edit-cancel-' + post.id}" class="btn btn-outline-secondary btn-sm float-right ml-1" style="display: none;" th:data-id="${post.id}">Cancel</button>
             <button th:id="${'post-edit-save-' + post.id}" class="btn btn-outline-primary btn-sm float-right ml-1" style="display: none;" th:data-id="${post.id}">Save</button>
         </div>
-        <div th:unless="${session.currUser.id == post.user.id}">
+        <div th:unless="${currUser.id == post.user.id}">
             <button sec:authorize="hasRole('ROLE_ADMIN')" th:id="${'post-delete-' + post.id}" class="btn btn-outline-danger btn-sm float-right post-delete" th:data-id="${post.id}">Delete</button>
         </div>
     </div>
@@ -55,7 +55,7 @@
             <span class="fa fa-comments"></span>
             <span th:id="${'comments-count-' + post.id}" th:text="${post.commentsCount}"></span>
         </span>
-        <span class="d-block text-big" th:classappend="${post.likesUserIds.contains(session.currUser.id)} ? text-success : text-secondary">
+        <span class="d-block text-big" th:classappend="${post.likesUserIds.contains(currUser.id)} ? text-success : text-secondary">
             <span class="fa fa-thumbs-o-up btn-like" th:data-id="${post.id}"></span>
             <span th:id="${'post-likes-count-' + post.id}" th:text="${#lists.size(post.likesUserIds)}"></span>
         </span>

@@ -55,8 +55,8 @@ public class FeedController {
 
     @ResponseBody
     @GetMapping("pageCount/watched")
-    public int pageCountWatched(@ModelAttribute("currUser") User currUser) {
-        return postService.getPageCountByUserIds(currUser.getWatchedUsersIds());
+    public int pageCountWatched() {
+        return postService.getPageCountByUserIds(userService.getCurrent().getWatchedUsersIds());
     }
 
     /* Read routes */
@@ -66,20 +66,23 @@ public class FeedController {
         List<Post> posts = postService.getPage(pageId);
         posts.forEach(post -> post.setCommentsCount((int) commentService.getCommentsCount(post)));
         model.addAttribute("posts", posts);
+        model.addAttribute("currUser", userService.getCurrent());
         return "feed/posts";
     }
 
     @GetMapping("watched/{page}")
-    public String getPostsFromWatchedUsers(@ModelAttribute("currUser") User currUser, @PathVariable("page") int page, Model model) {
-        List<Post> posts = postService.getPageByUserIds(currUser.getWatchedUsersIds(), page);
+    public String getPostsFromWatchedUsers(@PathVariable("page") int page, Model model) {
+        List<Post> posts = postService.getPageByUserIds(userService.getCurrent().getWatchedUsersIds(), page);
         posts.forEach(post -> post.setCommentsCount((int) commentService.getCommentsCount(post)));
         model.addAttribute("posts", posts);
+        model.addAttribute("currUser", userService.getCurrent());
         return "feed/posts";
     }
 
     @GetMapping("search")
     public String searchPostsByTags(@RequestParam("tags") String[] tags, Model model) {
         model.addAttribute("posts", postService.findPostsContainingTag(new HashSet<>(Arrays.asList(tags))));
+        model.addAttribute("currUser", userService.getCurrent());
         return "feed/posts";
     }
 
@@ -92,12 +95,14 @@ public class FeedController {
         posts.sort(Comparator.comparing(Post::getTimestamp).reversed());
         posts.forEach(post -> post.setCommentsCount((int) commentService.getCommentsCount(post)));
         model.addAttribute("posts", posts);
+        model.addAttribute("currUser", userService.getCurrent());
         return "feed/posts";
     }
 
     @GetMapping("comments/{postId}")
     public String getCommentsForPost(@PathVariable("postId") long postId, Model model) {
         model.addAttribute("comments", commentService.getForPost(postService.getOne(postId)));
+        model.addAttribute("currUser", userService.getCurrent());
         return "feed/comments";
     }
 
@@ -106,7 +111,6 @@ public class FeedController {
     @PostMapping("post/save")
     public String savePost(@Valid Post post, @RequestParam(value = "tag", required = false) String[] tags,
                            @RequestParam(value = "extraTags", required = false) String extraTags,
-                           @ModelAttribute("currUser") User currUser,
                            BindingResult result) {
         if(result.hasErrors()) {
             return "feed/index";
@@ -125,15 +129,16 @@ public class FeedController {
         //Set tags
         if(tags.length > 0) Arrays.stream(tags).forEach(s -> post.getTags().add(s));
 
-        post.setUser(currUser);
+        post.setUser(userService.getCurrent());
         postService.save(post);
         return "redirect:/feed/dashboard";
     }
 
 
     @PostMapping("comment/save/{postId}")
-    public ResponseEntity<HttpStatus> commentOnPost(@ModelAttribute("currUser") User currUser, @PathVariable("postId") long postId, @RequestParam("message") String message) {
+    public ResponseEntity<HttpStatus> commentOnPost(@PathVariable("postId") long postId, @RequestParam("message") String message) {
         Post post = postService.getOne(postId);
+        User currUser = userService.getCurrent();
 
         if(post == null) throw new ObjectNotFoundException();
         if(post.getUser().getBlockedUsersIds().contains(currUser.getId())) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -143,8 +148,9 @@ public class FeedController {
     }
 
     @PostMapping("like/{postId}")
-    public ResponseEntity<HttpStatus> likePost(@ModelAttribute("currUser") User currUser, @PathVariable("postId") long postId) {
+    public ResponseEntity<HttpStatus> likePost(@PathVariable("postId") long postId) {
         Post post = postService.getOne(postId);
+        User currUser = userService.getCurrent();
 
         //If user has already liked selected post
         if(post.getLikesUserIds().contains(currUser.getId()))

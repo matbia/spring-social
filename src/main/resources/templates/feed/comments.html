@@ -11,10 +11,10 @@
             <small class="text-secondary d-block" th:text="${#dates.format(comment.timestamp, 'dd.MM.yyyy')}"></small>
         </div>
         <div sec:authorize="hasRole('ROLE_CONFIRMED')">
-            <div th:if="${session.currUser.id == comment.user.id}">
+            <div th:if="${currUser.id == comment.user.id}">
                 <button th:data-id="${comment.id}" class="btn btn-outline-danger btn-sm float-right btn-comment-delete">Delete</button>
             </div>
-            <div th:unless="${session.currUser.id == comment.user.id}" th:if="${session.currUser.id == comment.post.user.id}">
+            <div th:unless="$.currUser.id == comment.user.id}" th:if="${currUser.id == comment.post.user.id}">
                 <button th:data-id="${comment.id}" class="btn btn-outline-danger btn-sm float-right btn-comment-delete">Delete</button>
             </div>
         </div>
