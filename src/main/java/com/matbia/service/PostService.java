@@ -33,7 +33,7 @@ public class PostService {
         try {
             post.setYoutubeVideo(Utils.extractYouTubeId(post.getYoutubeVideo()));
 
-            if (post.getYoutubeVideo() != null && !post.getYoutubeVideo().isEmpty())
+            if (!post.getYoutubeVideo().isEmpty())
                 post.setMultipartFile(null);
 
             post.setPostFile(postFileService.registerPostFile(post.getMultipartFile()));
