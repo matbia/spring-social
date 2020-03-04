@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @GetMapping("register")
-    public String showRegisterationForm(Principal user, Model model) {
+    public String showRegistrationForm(Principal user, Model model) {
         if (user != null) return "redirect:/feed/dashboard";
 
         model.addAttribute("user", new User());
