@@ -119,7 +119,7 @@ function addMainListeners() {
             });
 
             let data = new FormData();
-            let formattedMsg = msgEl.innerHTML.replaceAll('<div>', '\n').replaceAll('</div>', '');
+            let formattedMsg = msgEl.innerHTML.replaceAll('<div>', '\n').replaceAll('</div>', '').replaceAll('<br>', '\n');
             data.append('msg', formattedMsg);
             data.append('tags', tagsInputEl.value);
             fetch('/feed/post/update/' + id, { method: 'POST', headers: { 'X-CSRF-TOKEN': token }, body: data })
