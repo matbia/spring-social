@@ -1,4 +1,4 @@
-$(function() {
+window.onload = () => {
     //Datepicker setup
     $('.input-date').datepicker({ dateFormat: 'dd.mm.yy', changeYear: true });
 
@@ -16,16 +16,6 @@ $(function() {
             $(this).addClass('btn-outline-info').removeClass('btn-info') : $(this).addClass('btn-outline-info').removeClass('btn-info');
     });
 
-    /*document.querySelectorAll('.btn-toggle').forEach(el =>
-        el.addEventListener('click', e => {
-            if (e.currentTarget.classList.contains('active')) {
-                $(this).addClass('btn-outline-info').removeClass('btn-info')
-            } else {
-                $(this).addClass('btn-outline-info').removeClass('btn-info');
-            }
-        });
-    );*/
-
     $('#file-input').on('change', function() {
         $('#file-input-name').html(this.files[0].name) //Chane input label to filename
         if(this.files[0].size / 1000000 > 10) {
@@ -38,12 +28,11 @@ $(function() {
             $('#file-submit').prop('disabled', false);
         }
     })
-});
+};
 
 
 String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.split(search).join(replacement);
+    return this.split(search).join(replacement);
 };
 
 /* Helper methods */
