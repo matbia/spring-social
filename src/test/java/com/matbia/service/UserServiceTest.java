@@ -5,55 +5,65 @@ import com.matbia.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Transactional
 public class UserServiceTest {
-    @MockBean
+    @Autowired
     private UserService userService;
+    private User user;
 
     @Before
     public void setup() {
-        User user = new User();
-        user.setId(1);
-        user.setFirstName("Tom");
-        user.setLastName("Terca");
+        user = new User();
+        user.setFirstName("Testfirstname");
+        user.setLastName("Testlastname");
         user.setGender(Gender.MALE);
-        user.setEmail("aBc@deF.org");
+        user.setEmail("aBcD123@test.xyz");
         user.setPassword("12345678");
-
-        Mockito.when(userService.findByEmail(user.getEmail())).thenReturn(user);
-        Mockito.when(userService.getOne(1)).thenReturn(Optional.of(user));
+        userService.save(user);
     }
 
     @Test
     public void getOne() {
-        Optional<User> user = userService.getOne(1);
-        assertTrue(user.isPresent());
-        assertEquals(user.get().getFirstName(), "Tom");
-        assertEquals(user.get().getLastName(), "Terca");
+        System.out.println(user.getId());
+        Optional<User> found = userService.getOne(user.getId());
+        assertTrue(found.isPresent());
+        assertEquals(found.get().getFirstName(), user.getFirstName());
+        assertEquals(found.get().getLastName(), user.getLastName());
     }
 
     @Test
     public void findByEmail() {
-        User user = userService.findByEmail("abc@def.org");
-        assertNotNull(user);
-        assertEquals("Tom", user.getFirstName());
+        User found = userService.findByEmail(user.getEmail().toLowerCase());
+        assertNotNull(found);
+        assertEquals(user.getFirstName(), found.getFirstName());
+        assertEquals(user.getId(), found.getId());
     }
 
     @Test
     public void save() {
-        User user = new User();
-        user.setFirstName("name");
-        user.setLastName("surname");
-        userService.save(user);
+        assertTrue(user.getId() > 0);
+    }
+
+    @Test
+    public void getAll() {
+        assertTrue(userService.getAll().stream().anyMatch(u ->
+                u.getEmail().equals(user.getEmail()) && u.getFirstName().equals(user.getFirstName()) && u.getLastName().equals(user.getLastName())
+        ));
+    }
+
+    @Test
+    public void getSize() {
+        assertTrue(userService.getSize() > 0);
     }
 }
