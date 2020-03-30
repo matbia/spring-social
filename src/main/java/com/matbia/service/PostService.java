@@ -119,7 +119,7 @@ public class PostService {
 
     /**
      * Counts number of pages based on number of posts made by any of the given users
-     * @param postId user's primary keys
+     * @param userIds user's primary keys
      * @return number of available pages
      */
     public int getPageCountByUserIds(Set<Long> userIds) {
