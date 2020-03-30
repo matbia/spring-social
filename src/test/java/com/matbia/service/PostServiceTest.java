@@ -117,7 +117,6 @@ public class PostServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     @Order(7)
     public void update() {
         String newTag = "new tag";
-        Post post = this.post;
         post.setMessage("Updated message.");
         post.getTags().add(newTag);
         postService.update(post);
@@ -129,7 +128,7 @@ public class PostServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     }
 
     @Test
-    @Order(9)
+    @Order(8)
     public void deleteByUser() {
         postService.deleteByUser(this.user);
     }
