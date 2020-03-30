@@ -58,9 +58,9 @@ public class PostServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     public void getOne() {
         Post post = postService.getOne(this.post.getId());
         assertNotNull(post);
-        assertEquals(post.getUser().getEmail(), this.post.getUser().getEmail());
-        assertEquals(post.getMessage(), this.post.getMessage());
-        assertEquals(post.getPostFile().getFilename(), this.post.getPostFile().getFilename());
+        assertEquals(this.post.getUser().getEmail(), post.getUser().getEmail());
+        assertEquals(this.post.getMessage(), post.getMessage());
+        assertEquals(this.post.getPostFile().getFilename(), post.getPostFile().getFilename());
         assertTrue(post.getTags().contains("test tag1"));
         assertTrue(post.getTags().contains("testtag3"));
     }
@@ -69,7 +69,7 @@ public class PostServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     @Order(2)
     public void getTotalPageCount() {
         long pagesCount = postService.getPageCountByUserIds(new HashSet<>(Collections.singletonList(user.getId())));
-        assertEquals(pagesCount, 1);
+        assertEquals(1, pagesCount);
     }
 
     @Test
@@ -77,11 +77,11 @@ public class PostServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     public void findPostsContainingTag() {
         Set<String> tags = new HashSet<>(Arrays.asList("testtag3", "test tag1"));
         Set<Post> posts = postService.findPostsContainingTag(tags);
-        assertEquals(posts.size(), 1);
+        assertEquals(1, posts.size());
 
         tags = new HashSet<>(Collections.singletonList("test tag2"));
         posts = postService.findPostsContainingTag(tags);
-        assertEquals(posts.size(), 1);
+        assertEquals(1, posts.size());
     }
 
     @Test
@@ -100,8 +100,8 @@ public class PostServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         Post post = posts.get(0);
 
         assertNotNull(post);
-        assertEquals(post.getUser().getEmail(), this.post.getUser().getEmail());
-        assertEquals(post.getMessage(), this.post.getMessage());
+        assertEquals(this.post.getUser().getEmail(), post.getUser().getEmail());
+        assertEquals(this.post.getMessage(), post.getMessage());
         assertTrue(post.getTags().contains("test tag1"));
         assertTrue(post.getTags().contains("testtag3"));
     }
@@ -124,7 +124,7 @@ public class PostServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
         Post found = postService.getOne(this.post.getId());
 
-        assertEquals(found.getMessage(), post.getMessage());
+        assertEquals(post.getMessage(), found.getMessage());
         assertTrue(found.getTags().contains(newTag));
     }
 

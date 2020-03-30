@@ -38,8 +38,8 @@ public class UserServiceTest {
         System.out.println(user.getId());
         Optional<User> found = userService.getOne(user.getId());
         assertTrue(found.isPresent());
-        assertEquals(found.get().getFirstName(), user.getFirstName());
-        assertEquals(found.get().getLastName(), user.getLastName());
+        assertEquals(user.getFirstName(), found.get().getFirstName());
+        assertEquals(user.getLastName(), found.get().getLastName());
     }
 
     @Test
