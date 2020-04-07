@@ -118,7 +118,7 @@ public class PostService {
     }
 
     /**
-     * Counts number of pages based on number of posts made by any of the given users
+     * Counts number of pages based on the number of posts made by all of the given users
      * @param userIds user's primary keys
      * @return number of available pages
      */
@@ -131,7 +131,7 @@ public class PostService {
     /**
      * Fetches a page of posts ordered descendingly by timestamp
      * @param page page number
-     * @return colletion containing no more than 10 posts
+     * @return collection containing no more than 10 posts
      */
     public List<Post> getPage(int page) {
         return postRepository.findByOrderByTimestampDesc(PageRequest.of(page - 1, 10));
