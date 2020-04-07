@@ -123,8 +123,9 @@ public class PostService {
      * @return number of available pages
      */
     public int getPageCountByUserIds(Set<Long> userIds) {
+        long postCount = userIds.stream().mapToLong(postRepository::countByUserId).sum();
         if(userIds.isEmpty()) return 0; //Prevent SQL error
-        return (int) Math.ceil(postRepository.countByUserIds(userIds) / 10.d);
+        return (int) Math.ceil(postCount / 10.d);
     }
 
     /**
