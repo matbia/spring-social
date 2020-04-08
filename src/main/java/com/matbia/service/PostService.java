@@ -37,7 +37,7 @@ public class PostService {
      */
     public List<Post> getPageByUserIds(Set<Long> userIds, int page) {
         if(userIds.isEmpty()) return new ArrayList<>(); //Prevent SQL error
-        return postRepository.findByUserIdsLimitResults(userIds, page * 10 - 10);
+        return postRepository.findByUserIdInOrderByTimestampDesc(userIds, PageRequest.of(page - 1, 10));
     }
 
     /**
