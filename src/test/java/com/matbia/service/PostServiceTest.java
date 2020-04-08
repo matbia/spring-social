@@ -129,7 +129,17 @@ public class PostServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
     @Test
     @Order(8)
+    public void getPageByUserIds() {
+        List<Post> posts = postService.getPageByUserIds(Collections.singleton(user.getId()), 1);
+        assertEquals(1, posts.size());
+        assertEquals(post.getMessage(), posts.get(0).getMessage());
+    }
+
+    @Test
+    @Order(9)
     public void deleteByUser() {
         postService.deleteByUser(this.user);
     }
+
+
 }
