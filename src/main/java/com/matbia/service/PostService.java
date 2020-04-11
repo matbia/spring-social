@@ -160,8 +160,7 @@ public class PostService {
      * @param tags set of tags
      * @return found posts
      */
-    //TODO: Prevent duplicates
-    public Set<Post> findPostsContainingTag(Set<String> tags) {
-        return postRepository.findByTag(tags.stream().map(String::toLowerCase).collect(Collectors.toSet()));
+    public List<Post> findPostsContainingTag(Set<String> tags) {
+        return postRepository.findDistinctByTagsInOrderByTimestampDesc(tags.stream().map(String::toLowerCase).collect(Collectors.toSet()));
     }
 }
