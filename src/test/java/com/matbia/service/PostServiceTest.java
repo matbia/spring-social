@@ -79,7 +79,7 @@ public class PostServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         List<Post> posts = postService.findPostsContainingTag(tags);
         assertEquals(1, posts.size());
 
-        tags = new HashSet<>(Collections.singletonList("test tag2"));
+        tags = Collections.singleton("test tag2");
         posts = postService.findPostsContainingTag(tags);
         assertEquals(1, posts.size());
     }
