@@ -1,4 +1,4 @@
-let token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 let pageCount = 0;
 let currPage = 1;
 let currMode = 'new';
