@@ -1,7 +1,9 @@
 const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+const FeedMode = Object.freeze({'new': 'new', 'watched': 'watched', 'search': 'search'})
+
 let pageCount = 0;
 let currPage = 1;
-let currMode = 'new';
+let currMode = FeedMode.new;
 
 let loadingEl = document.createElement('img');
 loadingEl.setAttribute('src', '/img/loading.gif');
@@ -224,7 +226,7 @@ function loadPostsPage(mode) {
 }
 
 function search(tags) {
-    currMode = 'search';
+    currMode = FeedMode.search;
     document.querySelector('.feed-posts').innerHTML = '';
 
     document.querySelector('.feed-posts').appendChild(loadingEl);
@@ -293,10 +295,10 @@ window.onload = () => {
                 e.target.classList.add('active', 'text-primary');
 
                 if(e.target.classList.contains('new')) {
-                    loadPostsPage('new')
+                    loadPostsPage(FeedMode.new)
                 }
                 if(e.target.classList.contains('watched')) {
-                    loadPostsPage('watched')
+                    loadPostsPage(FeedMode.watched)
                 }
 
                 let searchEl = document.querySelector('.search-box');
@@ -311,7 +313,7 @@ window.onload = () => {
                 }
             });
         });
-        loadPostsPage('new');
+        loadPostsPage(FeedMode.new);
     }
     else if(window.location.pathname.includes('/user/profile')) loadPostsUser();
 };
