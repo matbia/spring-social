@@ -161,6 +161,6 @@ public class PostService {
      * @return found posts
      */
     public List<Post> findPostsContainingTag(Set<String> tags) {
-        return postRepository.findDistinctByTagsInOrderByTimestampDesc(tags.stream().map(String::toUpperCase).collect(Collectors.toSet()));
+        return postRepository.findDistinctByTagsInOrderByTimestampDesc(tags);
     }
 }

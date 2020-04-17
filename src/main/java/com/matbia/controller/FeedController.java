@@ -109,25 +109,14 @@ public class FeedController {
     /* Save routes */
 
     @PostMapping("post/save")
-    public String savePost(@Valid Post post, @RequestParam(value = "tag", required = false) String[] tags,
-                           @RequestParam(value = "extraTags", required = false) String extraTags,
-                           BindingResult result) {
-        if(result.hasErrors()) {
-            return "feed/index";
-        }
+    public String savePost(@Valid Post post, @RequestParam(value = "tags") String tagsStr, BindingResult result) {
+        if(result.hasErrors()) return "feed/index";
 
-        tags = Optional.ofNullable(tags).orElse(new String[0]); //Null check
-
-        //Parse extra tags
-        String[] extraTagsArr = extraTags != null && !extraTags.isEmpty() ?
-                Arrays.stream(extraTags.split(",")).map(t -> t.trim().toUpperCase().replace(" ", "_")).toArray(String[]::new) : new String[0];
-
-        //Merge tags
-        tags =  Stream.concat(Arrays.stream(tags), Arrays.stream(extraTagsArr))
-                .toArray(String[]::new);
-
-        //Set tags
-        if(tags.length > 0) Arrays.stream(tags).forEach(s -> post.getTags().add(s));
+        //Parse tags
+        Arrays.stream(tagsStr.split(","))
+                .map(s -> s.trim().replaceAll("\\s{2,}|\\t", " "))
+                .filter(s -> !s.isEmpty())
+                .forEach(s -> post.getTags().add(s));
 
         post.setUser(userService.getCurrent());
         postService.save(post);
