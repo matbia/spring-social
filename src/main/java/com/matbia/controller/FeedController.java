@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("feed")
@@ -81,7 +80,7 @@ public class FeedController {
 
     @GetMapping("search")
     public String searchPostsByTags(@RequestParam("tags") String[] tags, Model model) {
-        model.addAttribute("posts", postService.findPostsContainingTag(new HashSet<>(Arrays.asList(tags))));
+        model.addAttribute("posts", postService.findPostsContainingTags(new HashSet<>(Arrays.asList(tags))));
         model.addAttribute("currUser", userService.getCurrent());
         return "feed/posts";
     }

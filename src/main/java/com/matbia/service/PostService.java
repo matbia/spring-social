@@ -160,7 +160,7 @@ public class PostService {
      * @param tags set of tags
      * @return found posts
      */
-    public List<Post> findPostsContainingTag(Set<String> tags) {
+    public List<Post> findPostsContainingTags(Set<String> tags) {
         return postRepository.findDistinctByTagsInOrderByTimestampDesc(tags);
     }
 }
