@@ -45,6 +45,10 @@ public class Post extends FeedObject {
         this.tags = tags;
     }
 
+    public void addTag(String tag) {
+        this.tags.add(tag);
+    }
+
     public Set<Long> getLikesUserIds() {
         return likesUserIds;
     }

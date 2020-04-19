@@ -115,7 +115,7 @@ public class FeedController {
         Arrays.stream(tagsStr.split(","))
                 .map(s -> s.trim().replaceAll("\\s{2,}|\\t", " "))
                 .filter(s -> !s.isEmpty())
-                .forEach(s -> post.getTags().add(s));
+                .forEach(post::addTag);
 
         post.setUser(userService.getCurrent());
         postService.save(post);
