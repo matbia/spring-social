@@ -22,7 +22,6 @@ function loadMessages(userId) {
 function loadUsers() {
     let handleUserLoad = e => {
         recipientId = e.currentTarget.getAttribute('data-id');
-        alert(recipientId);
         loadMessages(recipientId);
         document.querySelector('#recipient-id').value = recipientId;
     };
