@@ -5,6 +5,7 @@ import com.matbia.model.ConfirmationToken;
 import com.matbia.model.User;
 import com.matbia.repository.ConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,18 +16,19 @@ public class ConfirmationService {
     private ConfirmationTokenRepository confirmationTokenRepository;
     @Autowired
     private MailService mailService;
+    @LocalServerPort
+    private int localServerPort;
 
     public ConfirmationToken findByToken(String token) {
         return confirmationTokenRepository.findByToken(token);
     }
 
     public void generate(User user) {
-        ConfirmationToken confirmationToken = new ConfirmationToken();
-        confirmationToken.setUser(user);
+        ConfirmationToken confirmationToken = new ConfirmationToken(user);
         confirmationTokenRepository.save(confirmationToken);
 
-        String message = "http://" + Utils.getExternalIP() + ":8080/user/confirm?token=" + confirmationToken.getToken();
-        mailService.send(user.getContactEmail(), " Coach Meets - Potwierdzenie rejestracji", message);
+        String message = "http://" + Utils.getExternalIP() + ":" + localServerPort + "/user/confirm?token=" + confirmationToken.getToken();
+        mailService.send(user.getContactEmail(), "Verify your Spring Social account", message);
     }
 
     @Transactional

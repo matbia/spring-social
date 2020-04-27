@@ -23,6 +23,10 @@ public class ConfirmationToken {
      @JoinColumn(nullable = false, unique = true, name = "user_id")
      private User user;
 
+     public ConfirmationToken(User user) {
+          this.user = user;
+     }
+
      @PrePersist
      public void generateToken() {
           token = UUID.randomUUID().toString();
