@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class Utils {
     /**
-     * Scales image dimentions
+     * Scales image dimensions
      * @param imgByteArr image file as a byte array
      * @param fileExtension image file extension
      * @param targetSize desired image width
