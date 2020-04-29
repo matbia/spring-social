@@ -17,15 +17,19 @@ public class LoginAttemptService {
     /**
      * Amount of allowed failed login attempts before client's IP address gets blocked
      */
-    private  final int MAX_ATTEMPT = 5;
-    private LoadingCache<String, Integer> attemptsCache;
+    private static final byte MAX_ATTEMPT = 5;
+    /**
+     * Number of hours IP addresses are kept in cache
+     */
+    private static final byte BLOCK_HOURS = 1;
+    private final LoadingCache<String, Integer> attemptsCache;
 
     /**
      * Constructor configures and builds the login attempts cache.
      */
     public LoginAttemptService() {
         attemptsCache = CacheBuilder.newBuilder().
-                expireAfterWrite(3, TimeUnit.HOURS).build(new CacheLoader<String, Integer>() {
+                expireAfterWrite(BLOCK_HOURS, TimeUnit.HOURS).build(new CacheLoader<String, Integer>() {
             public Integer load(String key) {
                 return 0;
             }
