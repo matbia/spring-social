@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * Service class responsible for preventing brute-force attacks on user accounts.
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class LoginAttemptService {
+    private static final Logger LOGGER = Logger.getLogger(LoginAttemptService.class.getName());
     /**
      * Amount of allowed failed login attempts before client's IP address gets blocked
      */
@@ -41,6 +43,7 @@ public class LoginAttemptService {
      * @param key client's IP address
      */
     public void loginSucceeded(String key) {
+        LOGGER.info("Successful login attempt coming from: " + key);
         attemptsCache.invalidate(key);
     }
 
@@ -55,6 +58,7 @@ public class LoginAttemptService {
         } catch (ExecutionException ignored) { }
         attempts++;
         attemptsCache.put(key, attempts);
+        LOGGER.info("Failed login attempt coming from: " + key + " Attempt number: " + attempts);
     }
 
     /**
