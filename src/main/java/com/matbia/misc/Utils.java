@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Miscellaneous static utility methods
  */
-public class Utils {
+public abstract class Utils {
     /**
      * Scales image dimensions
      * @param imgByteArr image file as a byte array
