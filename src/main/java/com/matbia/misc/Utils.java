@@ -36,7 +36,7 @@ public abstract class Utils {
      * @return YouTube video ID or empty string if URL is invalid
      */
     public static String extractYouTubeId(String ytUrl) {
-        String regex = "(?<=watch\?v=|/videos/|embed\/|youtu.be\/|\/v\/|watch\?v%3D|%2Fvideos%2F|embed%2F|youtu.be%2F|%2Fv%2F)[^#\&\?\n]*";
+        String regex = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|watch\\?v%3D|%2Fvideos%2F|embed%2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
         Matcher matcher = Pattern.compile(regex).matcher(ytUrl);
         return matcher.find() ? matcher.group() : "";
     }
